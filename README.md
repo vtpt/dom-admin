@@ -47,7 +47,6 @@ You can use dom-adminJS in one the following ways:
     //use DomAdmin as usual
   });
 ```
-```
 
 ## License
 

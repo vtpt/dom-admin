@@ -1,10 +1,16 @@
 "use strict";
 
-(function(factory) {
-    if (typeof window.DomAdmin === "undefined") {
-        window.DomAdmin = new factory(window);  
+(function(root, factory) {
+    if (typeof define === "function" && define.amd) {
+        define([], factory);
+    } else if (typeof module === "object" && module.exports) {
+        module.exports = factory();
+    } else {
+        if (typeof root.DomAdmin === "undefined") {
+            root.DomAdmin = new factory(root);
+        }
     }
-})(function DomAdmin() {
+})(this, function DomAdmin() {
     var self = this;
     var MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
     var eventListenerSupported = window.addEventListener;

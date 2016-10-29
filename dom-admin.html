@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+
+<head>
+    <script type="text/javascript" src="dom-admin.js"></script>
+    <script>
+        function testDomAdmin() {
+            DomAdmin.on('create', function(record) {
+                alert('created: ' + record.target);
+            });
+
+            DomAdmin.on('modify', function(record) {
+                alert('modified: ' + record.target);
+            });
+
+            DomAdmin.on('delete', function(record) {
+                alert('deleted:' + record.target);
+            });
+
+            DomAdmin.on('modify', function(record) {
+                alert('parent modified: ' + record.target);
+            }, document.querySelector('#parent'));
+        }
+
+        var count = 0;
+
+        function createDiv() {
+            var newChild = document.createElement('div');
+            newChild.setAttribute('id', 'child' + count);
+
+            document.querySelector('#parent').appendChild(newChild);
+            count++;
+        }
+
+        function deleteDiv() {
+            if (count > 0) {
+                var child = document.querySelector('#child' + (count - 1));
+                document.querySelector('#parent').removeChild(child);
+                count--;
+            } else {
+                alert('create dom first!');
+            }
+        }
+
+        function modifyDiv() {
+            if (count > 0) {
+                var child = document.querySelector('#child' + (count - 1));
+                child.setAttribute('data-changes', 'changes');
+            } else {
+                alert('create dom first!');
+            }
+        }
+
+        function removeCreateEvent() {
+            DomAdmin.off('create');
+        }
+
+        function removeModifyEvent() {
+            DomAdmin.off('modify');
+        }
+
+        function removeDeleteEvent() {
+            DomAdmin.off('delete');
+        }
+
+        function removeParentModifyEvent() {
+            DomAdmin.off('modify', document.querySelector('#parent'));
+        }
+    </script>
+
+</head>
+
+<body>
+    <p>
+        <button onclick="createDiv(); return false;">CREATE DOM</button>
+        <button onclick="modifyDiv(); return false;">MODIFY DOM</button>
+        <button onclick="deleteDiv(); return false;">DELETE DOM</button>
+    </p>
+    <p>
+        <button onclick="removeCreateEvent(); return false;">REMOVE CREATE EVENT WATCHER</button>
+        <button onclick="removeModifyEvent(); return false;">REMOVE MODIFY EVENT WATCHER</button>
+        <button onclick="removeDeleteEvent(); return false;">REMOVE DELETE EVENT WATCHER</button>
+        <button onclick="removeParentModifyEvent(); return false;">REMOVE PARENT DIV MODIFY EVENT WATCHER</button>
+    </p>
+    <div id="parent">
+
+    </div>
+
+    <script>
+        testDomAdmin();
+    </script>
+</body>
+
+</html>
